@@ -1,6 +1,18 @@
 import { create } from "zustand";
 
-export type TravelTab = "flights" | "hotels" | "homestays" | "holidays" | "trains" | "buses" | "cabs";
+export type TravelTab =
+  | "flights"
+  | "hotels"
+  | "homestays"
+  | "holidays"
+  | "trains"
+  | "buses"
+  | "cabs"
+  | "tours"
+  | "visa"
+  | "cruise"
+  | "forex"
+  | "insurance";
 export type TripType = "oneWay" | "roundTrip" | "multiCity";
 export type TravelClass = "economy" | "premiumEconomy" | "business" | "firstClass";
 export type FareType = "regular" | "student" | "senior" | "armed" | "doctor" | "double";
@@ -44,16 +56,16 @@ export interface SearchState {
 }
 
 const defaultFromCity: City = {
-  code: "DEL",
-  name: "Delhi",
-  airport: "Indira Gandhi International Airport",
+  code: "BLR",
+  name: "Bengaluru",
+  airport: "Kempegowda International Airport",
   country: "India",
 };
 
 const defaultToCity: City = {
-  code: "BOM",
-  name: "Mumbai",
-  airport: "Chhatrapati Shivaji Maharaj Intl Airport",
+  code: "DEL",
+  name: "New Delhi",
+  airport: "Indira Gandhi International Airport",
   country: "India",
 };
 

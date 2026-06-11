@@ -17,8 +17,8 @@ def test_homepage_content_contract() -> None:
 
     assert response.status_code == 200
     payload = response.json()
-    assert payload["hero"]["title"] == "Where to Next?"
-    assert len(payload["tabs"]) >= 7
+    assert payload["hero"]["eyebrow"] == "Try Myra beta"
+    assert len(payload["tabs"]) >= 12
     assert len(payload["fares"]) >= 6
     assert len(payload["trustItems"]) == 5
 

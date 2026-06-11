@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useAuthStore } from "@/store/useAuthStore";
-import { Briefcase, ChevronDown, User, LogOut, Globe } from "lucide-react";
+import { Briefcase, ChevronDown, Heart, Home, LogOut, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,23 +14,38 @@ export default function Header() {
   const { user, isLoggedIn, setLoginModalOpen, logout } = useAuthStore();
 
   return (
-    <header className="w-full bg-[#0a2240] text-white px-4 md:px-8 py-3.5 flex items-center justify-between border-b border-blue-950/40 relative z-30">
+    <header className="absolute left-0 right-0 top-0 z-40 w-full border-b border-white/5 bg-[#061522]/82 px-4 py-3 text-white backdrop-blur-sm md:px-8">
       {/* Left: Brand Logo */}
-      <div className="flex items-center gap-2 cursor-pointer">
-        <div className="text-xl md:text-2xl font-black tracking-tight bg-gradient-to-r from-blue-400 via-sky-300 to-white bg-clip-text text-transparent">
-          make<span className="text-white">my</span>trip
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-5">
+        <div className="flex items-center gap-1 cursor-pointer shrink-0">
+          <span className="text-[18px] font-black tracking-tight text-white">make</span>
+          <span className="rounded-[7px] bg-[#e51f26] px-1.5 py-1 text-[15px] font-black italic leading-none text-white shadow-sm">my</span>
+          <span className="text-[18px] font-black tracking-tight text-white">trip</span>
         </div>
-      </div>
 
       {/* Right: Actions */}
-      <div className="flex items-center gap-4 md:gap-6 text-xs font-semibold">
-        {/* myBiz Promo */}
-        <div className="hidden lg:flex items-center gap-2 cursor-pointer hover:bg-white/5 px-3 py-1.5 rounded-lg transition-colors border border-blue-900/30">
-          <div className="p-1 bg-gradient-to-br from-amber-400 to-orange-500 rounded-md">
-            <Briefcase className="h-3.5 w-3.5 text-slate-900" />
+      <div className="flex min-w-0 flex-1 items-center justify-end gap-2 text-xs font-semibold">
+        <div className="hidden xl:flex items-center gap-2 cursor-pointer hover:bg-white/8 px-3 py-1.5 rounded-lg transition-colors border-l border-white/10">
+          <div className="h-8 w-8 rounded-full bg-[#ffba00] text-[#111827] grid place-items-center">
+            <Home className="h-4 w-4" />
           </div>
           <div>
-            <div className="text-[10px] text-amber-300 font-bold uppercase tracking-wider leading-none">
+            <div className="text-[10px] text-white font-black leading-none">
+              List Your Property
+            </div>
+            <div className="text-[9px] text-slate-300 font-medium mt-1">
+              Grow your business!
+            </div>
+          </div>
+        </div>
+
+        {/* myBiz Promo */}
+        <div className="hidden lg:flex items-center gap-2 cursor-pointer hover:bg-white/8 px-3 py-1.5 rounded-lg transition-colors border-l border-white/10">
+          <div className="h-8 w-8 rounded-md bg-[#e51f26] grid place-items-center text-[13px] font-black italic">
+            my
+          </div>
+          <div>
+            <div className="text-[10px] text-white font-black uppercase tracking-tight leading-none">
               Introducing myBiz
             </div>
             <div className="text-[9px] text-slate-300 font-medium mt-0.5">
@@ -41,11 +56,11 @@ export default function Header() {
 
         {/* My Trips */}
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-2 cursor-pointer hover:bg-white/5 px-3 py-1.5 rounded-lg transition-colors focus:outline-none">
-            <Briefcase className="h-4.5 w-4.5 text-blue-400" />
+          <DropdownMenuTrigger className="hidden md:flex items-center gap-2 cursor-pointer hover:bg-white/8 px-3 py-1.5 rounded-lg transition-colors focus:outline-none border-l border-white/10">
+            <Briefcase className="h-4.5 w-4.5 text-[#ffba00]" />
             <div className="text-left">
               <div className="leading-tight">My Trips</div>
-              <div className="text-[9px] text-slate-400 font-normal mt-0.5">Manage Bookings</div>
+              <div className="text-[9px] text-slate-300 font-normal mt-0.5">Manage your bookings</div>
             </div>
             <ChevronDown className="h-3 w-3 text-slate-400" />
           </DropdownMenuTrigger>
@@ -58,6 +73,16 @@ export default function Header() {
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <div className="hidden lg:flex items-center gap-2 cursor-pointer hover:bg-white/8 px-3 py-1.5 rounded-lg transition-colors border-l border-white/10">
+          <div className="h-8 w-8 rounded-full bg-[#ff6d6a]/20 text-[#ff6d6a] grid place-items-center">
+            <Heart className="h-4 w-4 fill-[#ff6d6a]" />
+          </div>
+          <div>
+            <div className="leading-tight">Wishlist</div>
+            <div className="text-[9px] text-slate-300 font-normal mt-0.5">Save favourites</div>
+          </div>
+        </div>
 
         {/* Auth Button */}
         {isLoggedIn && user ? (
@@ -87,19 +112,20 @@ export default function Header() {
         ) : (
           <button
             onClick={() => setLoginModalOpen(true)}
-            className="flex items-center gap-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-4 py-2 rounded-xl text-white shadow-lg shadow-blue-500/15 transition-all border border-blue-500/20"
+            className="flex items-center gap-2.5 bg-white px-4 py-2 rounded text-[#008cff] shadow-lg shadow-black/10 transition-all border border-white/20 hover:bg-[#f2f8ff]"
           >
-            <User className="h-4 w-4 text-blue-200" />
+            <User className="h-4 w-4 text-[#008cff]" />
             <span>Login or Create Account</span>
+            <ChevronDown className="h-3 w-3" />
           </button>
         )}
 
         {/* Country Selector */}
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-2 cursor-pointer hover:bg-white/5 px-2.5 py-1.5 rounded-lg transition-colors border border-blue-900/10 focus:outline-none">
-            <Globe className="h-4 w-4 text-blue-400" />
-            <div className="text-left uppercase text-[10px]">
-              IN | EN | INR
+          <DropdownMenuTrigger className="flex items-center gap-2 cursor-pointer hover:bg-white/8 px-2.5 py-1.5 rounded transition-colors focus:outline-none">
+            <span className="h-3 w-5 rounded-[1px] bg-gradient-to-b from-[#ff9933] via-white to-[#138808] shadow-sm" />
+            <div className="text-left uppercase text-[10px] whitespace-nowrap">
+              INR | English
             </div>
             <ChevronDown className="h-3 w-3 text-slate-400" />
           </DropdownMenuTrigger>
@@ -123,6 +149,7 @@ export default function Header() {
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
+      </div>
       </div>
     </header>
   );
