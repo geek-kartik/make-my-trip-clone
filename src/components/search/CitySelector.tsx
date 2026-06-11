@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { mockCities } from "@/data/mockData";
 import { City } from "@/store/useSearchStore";
 import { Search, Plane, Landmark } from "lucide-react";
+import { useCities } from "@/hooks/useTravelApi";
 
 interface CitySelectorProps {
   type: "from" | "to";
@@ -16,6 +16,7 @@ export default function CitySelector({ type, value, onSelect, otherCity }: CityS
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
+  const { data: cities = [], isLoading, isError } = useCities(searchQuery, otherCity);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -26,19 +27,6 @@ export default function CitySelector({ type, value, onSelect, otherCity }: CityS
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const filteredCities = mockCities.filter((city) => {
-    // Exclude the already selected city in the other field
-    if (city.code === otherCity.code) return false;
-
-    const query = searchQuery.toLowerCase();
-    return (
-      city.name.toLowerCase().includes(query) ||
-      city.code.toLowerCase().includes(query) ||
-      city.airport.toLowerCase().includes(query) ||
-      city.country.toLowerCase().includes(query)
-    );
-  });
 
   const handleSelect = (city: City) => {
     onSelect(city);
@@ -82,8 +70,16 @@ export default function CitySelector({ type, value, onSelect, otherCity }: CityS
           </div>
 
           <div className="max-h-[300px] overflow-y-auto custom-scrollbar space-y-1">
-            {filteredCities.length > 0 ? (
-              filteredCities.map((city) => (
+            {isLoading ? (
+              <div className="text-center py-6 text-sm text-slate-400 font-medium">
+                Loading cities from backend...
+              </div>
+            ) : isError ? (
+              <div className="text-center py-6 text-sm text-red-400 font-medium">
+                Unable to load cities. Check the FastAPI service.
+              </div>
+            ) : cities.length > 0 ? (
+              cities.map((city) => (
                 <button
                   key={city.code}
                   onClick={() => handleSelect(city)}

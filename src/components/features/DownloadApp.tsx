@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { Smartphone, CheckCircle2, Phone, Sparkles } from "lucide-react";
+import { CheckCircle2, Sparkles } from "lucide-react";
+import { useHomepageContent } from "@/hooks/useTravelApi";
 
 export default function DownloadApp() {
   const [phone, setPhone] = useState("");
   const [sent, setSent] = useState(false);
+  const { data: homepage } = useHomepageContent();
+  const content = homepage?.downloadApp;
 
   const handleSendLink = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,13 +27,13 @@ export default function DownloadApp() {
         <div className="lg:col-span-7 space-y-6">
           <div className="space-y-3">
             <span className="text-[10px] bg-blue-500/20 text-blue-400 font-extrabold uppercase px-3 py-1 rounded-full border border-blue-500/20 tracking-wider inline-flex items-center gap-1.5">
-              <Sparkles className="h-3 w-3" /> Exclusive Savings
+              <Sparkles className="h-3 w-3" /> {content?.eyebrow ?? "Loading savings"}
             </span>
             <h2 className="text-3xl font-black tracking-tight leading-tight">
-              Download the MakeMyTrip App
+              {content?.title ?? "Download the MakeMyTrip App"}
             </h2>
             <p className="text-slate-400 text-sm max-w-lg leading-relaxed">
-              Book flights, hotels, trains & holiday packages with special app-only discounts, track refund status instantly, and chat with travel assistants.
+              {content?.body ?? "Loading app content from backend."}
             </p>
           </div>
 
@@ -68,14 +71,14 @@ export default function DownloadApp() {
           <div className="pt-2 flex flex-wrap items-center gap-4">
             <a href="#" className="hover:scale-[1.02] active:scale-98 transition-transform">
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
+                src={content?.appStoreUrl ?? ""}
                 alt="App Store"
                 className="h-10 border border-slate-800 rounded-md bg-black"
               />
             </a>
             <a href="#" className="hover:scale-[1.02] active:scale-98 transition-transform">
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                src={content?.playStoreUrl ?? ""}
                 alt="Google Play"
                 className="h-10"
               />
@@ -108,7 +111,7 @@ export default function DownloadApp() {
                 <div className="bg-white rounded-2xl p-3 space-y-2.5 shadow-lg shadow-black/20 text-slate-800">
                   <div className="flex justify-between items-center text-[9px] font-bold text-slate-400 uppercase tracking-wider">
                     <span>Flights Search</span>
-                    <span className="text-blue-600">DEL ➔ BOM</span>
+                    <span className="text-blue-600">{content?.phoneMockupRoute ?? "DEL -> BOM"}</span>
                   </div>
                   <div className="h-2.5 w-24 bg-slate-100 rounded" />
                   <div className="grid grid-cols-2 gap-2">
@@ -128,10 +131,10 @@ export default function DownloadApp() {
 
                 {/* Offer alert */}
                 <div className="bg-gradient-to-r from-amber-400/20 to-orange-500/20 border border-amber-500/20 rounded-xl p-2.5 flex items-center gap-2">
-                  <div className="text-[12px]">🎁</div>
+                    <div className="text-[12px]">%</div>
                   <div>
-                    <div className="text-[9px] font-bold text-amber-300">Flat 25% App Discount</div>
-                    <div className="text-[7px] text-slate-400 mt-0.5">Code: MMTAPPONLY</div>
+                    <div className="text-[9px] font-bold text-amber-300">{content?.offerTitle ?? "Loading app offer"}</div>
+                    <div className="text-[7px] text-slate-400 mt-0.5">Code: {content?.offerCode ?? "..."}</div>
                   </div>
                 </div>
               </div>

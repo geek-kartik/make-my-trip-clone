@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSearchStore, TravelClass } from "@/store/useSearchStore";
-import { getFlights, Flight } from "@/data/mockData";
+import { useSearchStore } from "@/store/useSearchStore";
+import type { Flight } from "@/services/api-types";
+import { useFlightSearch } from "@/hooks/useTravelApi";
 import { format } from "date-fns";
 import { 
-  ArrowLeft, Search, Filter, SlidersHorizontal, ArrowUpDown, 
-  Plane, ChevronRight, Loader2, Sparkles, CheckCircle2 
+  ArrowLeft, Filter, SlidersHorizontal,
+  ChevronRight, Loader2, CheckCircle2
 } from "lucide-react";
 
 export default function FlightResults() {
@@ -20,6 +21,7 @@ export default function FlightResults() {
     fareType,
     setIsSearchExecuted,
   } = useSearchStore();
+  const { refetch: refetchFlights } = useFlightSearch();
 
   const [loading, setLoading] = useState(true);
   const [flights, setFlights] = useState<Flight[]>([]);
@@ -35,22 +37,40 @@ export default function FlightResults() {
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
   useEffect(() => {
-    // Simulate API fetch delay
+    let active = true;
     setLoading(true);
-    const timer = setTimeout(() => {
-      const results = getFlights(fromCity.code, toCity.code, travelClass);
+
+    refetchFlights().then((response) => {
+      if (!active) return;
+
+      const results = response.data?.flights ?? [];
       setFlights(results);
-      
-      // Initialize max price filter from results
+
       if (results.length > 0) {
         const highestPrice = Math.max(...results.map(f => f.price));
         setMaxPrice(highestPrice + 1000);
       }
-      setLoading(false);
-    }, 1500);
+    }).finally(() => {
+      if (active) {
+        setLoading(false);
+      }
+    });
 
-    return () => clearTimeout(timer);
-  }, [fromCity, toCity, travelClass]);
+    return () => {
+      active = false;
+    };
+  }, [
+    fromCity.code,
+    toCity.code,
+    travelClass,
+    fareType,
+    departureDate,
+    returnDate,
+    travelers.adults,
+    travelers.children,
+    travelers.infants,
+    refetchFlights,
+  ]);
 
   const uniqueAirlines = Array.from(new Set(flights.map(f => f.airline)));
 

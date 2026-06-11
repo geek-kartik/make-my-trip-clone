@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useAuthStore } from "@/store/useAuthStore";
-import { Briefcase, ChevronDown, User, LogOut, Globe, ShieldCheck } from "lucide-react";
+import { Briefcase, ChevronDown, User, LogOut, Globe } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,

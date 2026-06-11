@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { useSearchStore, TravelTab, TripType, FareType } from "@/store/useSearchStore";
+import { useSearchStore, TripType } from "@/store/useSearchStore";
 import CitySelector from "./CitySelector";
 import TravelerSelector from "./TravelerSelector";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -11,27 +11,22 @@ import {
   Plane, Hotel, Home, Palmtree, Train, Bus, Car, 
   ArrowLeftRight, Calendar as CalendarIcon, Search, AlertCircle 
 } from "lucide-react";
+import { useCities, useHomepageContent } from "@/hooks/useTravelApi";
+import type { TravelTabItem } from "@/services/api-types";
 
-const TABS: { id: TravelTab; label: string; icon: React.ReactNode; color: string }[] = [
-  { id: "flights", label: "Flights", icon: <Plane className="h-5 w-5" />, color: "text-blue-500 hover:text-blue-600" },
-  { id: "hotels", label: "Hotels", icon: <Hotel className="h-5 w-5" />, color: "text-orange-500 hover:text-orange-600" },
-  { id: "homestays", label: "Homestays", icon: <Home className="h-5 w-5" />, color: "text-emerald-500 hover:text-emerald-600" },
-  { id: "holidays", label: "Holidays", icon: <Palmtree className="h-5 w-5" />, color: "text-amber-500 hover:text-amber-600" },
-  { id: "trains", label: "Trains", icon: <Train className="h-5 w-5" />, color: "text-red-500 hover:text-red-600" },
-  { id: "buses", label: "Buses", icon: <Bus className="h-5 w-5" />, color: "text-teal-500 hover:text-teal-600" },
-  { id: "cabs", label: "Cabs", icon: <Car className="h-5 w-5" />, color: "text-purple-500 hover:text-purple-600" },
-];
-
-const FARES: { id: FareType; label: string; desc: string }[] = [
-  { id: "regular", label: "Regular Fares", desc: "Standard pricing" },
-  { id: "student", label: "Student Fares", desc: "Extra baggage & discounts" },
-  { id: "senior", label: "Senior Citizen Fares", desc: "Up to ₹600 off" },
-  { id: "armed", label: "Armed Forces Fares", desc: "Special defense discounts" },
-  { id: "doctor", label: "Doctors & Nurses Fares", desc: "Thank you discounts" },
-  { id: "double", label: "Double Seat Fares", desc: "Extra space comfort" },
-];
+const TAB_ICONS: Record<TravelTabItem["icon"], React.ReactNode> = {
+  plane: <Plane className="h-5 w-5" />,
+  hotel: <Hotel className="h-5 w-5" />,
+  home: <Home className="h-5 w-5" />,
+  palmtree: <Palmtree className="h-5 w-5" />,
+  train: <Train className="h-5 w-5" />,
+  bus: <Bus className="h-5 w-5" />,
+  car: <Car className="h-5 w-5" />,
+};
 
 export default function SearchWidget() {
+  const { data: homepage } = useHomepageContent();
+  const { data: initialCities = [] } = useCities("");
   const {
     activeTab,
     tripType,
@@ -58,6 +53,18 @@ export default function SearchWidget() {
   const [depCalendarOpen, setDepCalendarOpen] = useState(false);
   const [retCalendarOpen, setRetCalendarOpen] = useState(false);
 
+  useEffect(() => {
+    const backendFromCity = initialCities.find((city) => city.code === fromCity.code);
+    const backendToCity = initialCities.find((city) => city.code === toCity.code);
+
+    if (backendFromCity && backendFromCity.airport !== fromCity.airport) {
+      setFromCity(backendFromCity);
+    }
+    if (backendToCity && backendToCity.airport !== toCity.airport) {
+      setToCity(backendToCity);
+    }
+  }, [initialCities, fromCity, toCity, setFromCity, setToCity]);
+
   const handleSearch = () => {
     setIsSearchExecuted(true);
   };
@@ -67,7 +74,7 @@ export default function SearchWidget() {
       {/* Category Tabs */}
       <div className="bg-white rounded-t-2xl shadow-lg border-b border-slate-100 flex items-center justify-between overflow-x-auto px-4 md:px-8 py-3.5 scrollbar-none gap-2">
         <div className="flex items-center gap-1 md:gap-3 w-full justify-between md:justify-start">
-          {TABS.map((tab) => {
+          {(homepage?.tabs ?? []).map((tab) => {
             const isActive = activeTab === tab.id;
             return (
               <button
@@ -85,7 +92,7 @@ export default function SearchWidget() {
                     ? "bg-blue-50 text-blue-600" 
                     : "bg-slate-50 group-hover:bg-slate-100 text-slate-500"
                 }`}>
-                  {tab.icon}
+                  {TAB_ICONS[tab.icon]}
                 </div>
                 <span className="text-[11px] tracking-wide mt-0.5">{tab.label}</span>
                 {isActive && (
@@ -128,7 +135,7 @@ export default function SearchWidget() {
 
           <div className="text-xs font-bold text-blue-600 bg-blue-50/60 px-3 py-1.5 rounded-lg border border-blue-100 flex items-center gap-1.5">
             <AlertCircle className="h-3.5 w-3.5" />
-            Book Domestic and International Flights
+            {homepage?.hero.alert ?? "Loading flight content"}
           </div>
         </div>
 
@@ -258,7 +265,7 @@ export default function SearchWidget() {
               Select A Special Fare:
             </span>
             <div className="flex flex-wrap gap-2">
-              {FARES.map((fare) => {
+              {(homepage?.fares ?? []).map((fare) => {
                 const isSelected = fareType === fare.id;
                 return (
                   <button
