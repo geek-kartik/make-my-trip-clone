@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { City } from "@/store/useSearchStore";
-import { Search, Plane, Landmark } from "lucide-react";
+import { Search } from "lucide-react";
 import { useCities } from "@/hooks/useTravelApi";
 
 interface CitySelectorProps {
@@ -17,6 +17,18 @@ export default function CitySelector({ type, value, onSelect, otherCity }: CityS
   const [searchQuery, setSearchQuery] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const { data: cities = [], isLoading, isError } = useCities(searchQuery, otherCity);
+
+  const groupedCities = cities.reduce<Record<string, City[]>>((groups, city) => {
+    const group = searchQuery ? "Search Results" : city.group ?? "Popular Cities";
+    return {
+      ...groups,
+      [group]: [...(groups[group] ?? []), city],
+    };
+  }, {});
+
+  const orderedGroups = searchQuery
+    ? ["Search Results"]
+    : ["Visa-Free/Visa-on-Arrival Destinations", "E-Visa Destinations", "Popular Cities"];
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -52,24 +64,35 @@ export default function CitySelector({ type, value, onSelect, otherCity }: CityS
       </div>
 
       {isOpen && (
-        <div className="absolute top-[102%] left-0 w-[420px] bg-white border border-slate-100 rounded-xl shadow-2xl z-50 p-4 animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="relative mb-3 flex items-center border border-slate-200 rounded-lg px-3 py-2 bg-slate-50 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
-            <Search className="h-4 w-4 text-slate-400 mr-2" />
+        <div className="absolute top-[100%] left-0 w-[348px] bg-white border border-[#c8d7ea] rounded-[3px] shadow-[0_4px_14px_rgba(0,0,0,0.24)] z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+          <div className="grid grid-cols-2 border-b border-[#d8e5f2] text-[13px] font-semibold">
+            <button
+              type="button"
+              className={`h-9 text-left px-4 ${type === "from" ? "bg-[#eaf5ff] text-[#008cff]" : "bg-white text-[#333]"}`}
+            >
+              From
+            </button>
+            <button
+              type="button"
+              className={`h-9 text-left px-4 ${type === "to" ? "bg-[#eaf5ff] text-[#008cff]" : "bg-white text-[#333]"}`}
+            >
+              To
+            </button>
+          </div>
+
+          <div className="relative flex h-[38px] items-center border-b border-[#e5e7eb] px-3 bg-white">
+            <Search className="h-4 w-4 text-[#6b7280] mr-2" />
             <input
               type="text"
-              placeholder={type === "from" ? "From where?" : "To where?"}
+              placeholder={type === "from" ? "From" : "To"}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-transparent text-sm w-full outline-none text-slate-800 placeholder-slate-400 font-medium"
+              className="bg-transparent text-[13px] w-full outline-none text-[#111] placeholder-[#4a4a4a] font-medium"
               autoFocus
             />
           </div>
 
-          <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">
-            {searchQuery ? "Search Results" : "Popular Cities"}
-          </div>
-
-          <div className="max-h-[300px] overflow-y-auto custom-scrollbar space-y-1">
+          <div className="max-h-[360px] overflow-y-auto custom-scrollbar p-3">
             {isLoading ? (
               <div className="text-center py-6 text-sm text-slate-400 font-medium">
                 Loading cities from backend...
@@ -79,40 +102,32 @@ export default function CitySelector({ type, value, onSelect, otherCity }: CityS
                 Unable to load cities. Check the FastAPI service.
               </div>
             ) : cities.length > 0 ? (
-              cities.map((city) => (
-                <button
-                  key={city.code}
-                  onClick={() => handleSelect(city)}
-                  type="button"
-                  className="w-full text-left flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-50 transition-colors group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-slate-100 rounded-lg text-slate-600 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors flex items-center justify-center">
-                      {city.country === "India" ? (
-                        <Plane className="h-4 w-4 rotate-45" />
-                      ) : (
-                        <Landmark className="h-4 w-4" />
-                      )}
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
-                        {city.name}, {city.country}
-                        <span className="text-[10px] bg-slate-100 text-slate-500 px-1 py-0.5 rounded font-semibold uppercase group-hover:bg-blue-100 group-hover:text-blue-700 transition-colors">
-                          {city.country === "India" ? "Domestic" : "Intl"}
-                        </span>
+              <div className="space-y-4">
+                {orderedGroups
+                  .filter((group) => groupedCities[group]?.length)
+                  .map((group) => (
+                    <section key={group}>
+                      <h3 className="mb-2 text-[12px] font-black text-[#111]">
+                        {group}
+                      </h3>
+                      <div className="grid grid-cols-3 gap-2">
+                        {groupedCities[group].map((city) => (
+                          <button
+                            key={city.code}
+                            onClick={() => handleSelect(city)}
+                            type="button"
+                            title={`${city.name}, ${city.country} - ${city.airport}`}
+                            className="min-h-[34px] rounded-[5px] border border-[#d8d8d8] bg-white px-2 py-1 text-center text-[12px] font-medium text-[#111] shadow-sm transition-colors hover:border-[#008cff] hover:bg-[#eaf5ff] hover:text-[#008cff]"
+                          >
+                            <span className="block truncate">
+                              {city.name}
+                            </span>
+                          </button>
+                        ))}
                       </div>
-                      <div className="text-[11px] text-slate-500 font-medium truncate max-w-[240px]">
-                        {city.airport}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-sm font-extrabold text-slate-700 bg-slate-50 px-2 py-1 rounded border border-slate-100 group-hover:border-blue-100 group-hover:text-blue-600 group-hover:bg-blue-50/50 transition-colors">
-                      {city.code}
-                    </span>
-                  </div>
-                </button>
-              ))
+                    </section>
+                  ))}
+              </div>
             ) : (
               <div className="text-center py-6 text-sm text-slate-400 font-medium">
                 No matching cities found.

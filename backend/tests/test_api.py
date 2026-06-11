@@ -32,6 +32,15 @@ def test_city_search_filters_and_excludes() -> None:
     assert all(city["code"] != "BOM" for city in cities)
 
 
+def test_city_catalog_contains_grouped_dummy_destinations() -> None:
+    response = client.get("/api/v1/locations/cities", params={"query": "manila"})
+
+    assert response.status_code == 200
+    cities = response.json()
+    assert cities[0]["code"] == "MNL"
+    assert cities[0]["group"] == "Visa-Free/Visa-on-Arrival Destinations"
+
+
 def test_offer_category_filter() -> None:
     response = client.get("/api/v1/offers", params={"category": "flights"})
 

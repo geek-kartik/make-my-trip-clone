@@ -69,6 +69,7 @@ class City(ApiModel):
     name: str
     airport: str
     country: str
+    group: str = "Popular Cities"
 
 
 class Offer(ApiModel):

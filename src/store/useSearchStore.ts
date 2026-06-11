@@ -22,6 +22,7 @@ export interface City {
   name: string;
   airport: string;
   country: string;
+  group?: string;
 }
 
 export interface SearchState {
