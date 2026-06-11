@@ -29,16 +29,17 @@ backend/database/schema.sql
 Create database/user:
 
 ```sql
-CREATE DATABASE makemytrip_clone;
-CREATE USER mmt_user WITH PASSWORD 'mmt_password';
-GRANT ALL PRIVILEGES ON DATABASE makemytrip_clone TO mmt_user;
+CREATE DATABASE "make-my-trip-clone";
+-- If this user does not already exist:
+CREATE USER mmt_karthiksrinivasgaddamuser WITH PASSWORD 'postgres';
+GRANT ALL PRIVILEGES ON DATABASE "make-my-trip-clone" TO mmt_karthiksrinivasgaddamuser;
 ```
 
 If your PostgreSQL user cannot create tables after connecting to the database, also run:
 
 ```sql
-\c makemytrip_clone
-GRANT ALL ON SCHEMA public TO mmt_user;
+\c "make-my-trip-clone"
+GRANT ALL ON SCHEMA public TO mmt_karthiksrinivasgaddamuser;
 ```
 
 Install and seed:
@@ -48,9 +49,16 @@ cd backend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-export DATABASE_URL="postgresql+psycopg://mmt_user:mmt_password@127.0.0.1:5432/makemytrip_clone"
+cp .env.example .env
 python -m app.scripts.seed_database
 uvicorn app.main:app --reload --port 8000
+```
+
+`backend/.env` should contain:
+
+```env
+DATABASE_URL=postgresql+psycopg://mmt_karthiksrinivasgaddamuser:postgres@127.0.0.1:5432/make-my-trip-clone
+DATABASE_ECHO=false
 ```
 
 API docs:
@@ -66,6 +74,8 @@ The Next.js app reads `NEXT_PUBLIC_API_BASE_URL`. If unset, it defaults to:
 ```text
 http://localhost:8000/api/v1
 ```
+
+The frontend does not read or use `DATABASE_URL`; only this FastAPI backend connects to PostgreSQL.
 
 ## Architecture
 

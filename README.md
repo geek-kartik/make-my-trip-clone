@@ -1,6 +1,6 @@
 # MakeMyTrip Clone
 
-Next.js frontend integrated with a FastAPI backend that serves homepage, offer, city, and flight-search data from PostgreSQL through SQLAlchemy repository handlers.
+Next.js frontend integrated with a FastAPI backend that serves homepage, offer, city, and flight-search data from PostgreSQL through SQLAlchemy repository handlers. The frontend only calls FastAPI; it never connects to PostgreSQL directly.
 
 ## Getting Started
 
@@ -9,9 +9,10 @@ Next.js frontend integrated with a FastAPI backend that serves homepage, offer, 
 Create/seed PostgreSQL first:
 
 ```sql
-CREATE DATABASE makemytrip_clone;
-CREATE USER mmt_user WITH PASSWORD 'mmt_password';
-GRANT ALL PRIVILEGES ON DATABASE makemytrip_clone TO mmt_user;
+CREATE DATABASE "make-my-trip-clone";
+-- If this user does not already exist:
+CREATE USER mmt_karthiksrinivasgaddamuser WITH PASSWORD 'postgres';
+GRANT ALL PRIVILEGES ON DATABASE "make-my-trip-clone" TO mmt_karthiksrinivasgaddamuser;
 ```
 
 ```bash
@@ -19,7 +20,7 @@ cd backend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-export DATABASE_URL="postgresql+psycopg://mmt_user:mmt_password@127.0.0.1:5432/makemytrip_clone"
+cp .env.example .env
 python -m app.scripts.seed_database
 uvicorn app.main:app --reload --port 8000
 ```
@@ -38,6 +39,12 @@ In another terminal:
 npm install
 cp .env.example .env.local
 npm run dev
+```
+
+The frontend `.env.local` should only contain:
+
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000/api/v1
 ```
 
 Open:
