@@ -1,6 +1,37 @@
 from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 
+from app.api.dependencies import get_catalog_repository
+from app.db.models import Base
+from app.db.seed import seed_database
+from app.infrastructure.repositories.sqlalchemy_catalog import SQLAlchemyTravelCatalogRepository
 from app.main import app
+
+engine = create_engine(
+    "sqlite://",
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool,
+)
+TestingSessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+Base.metadata.create_all(bind=engine)
+seed_db = TestingSessionLocal()
+try:
+    seed_database(seed_db)
+finally:
+    seed_db.close()
+
+
+def override_catalog_repository():
+    db = TestingSessionLocal()
+    try:
+        yield SQLAlchemyTravelCatalogRepository(db=db)
+    finally:
+        db.close()
+
+
+app.dependency_overrides[get_catalog_repository] = override_catalog_repository
 
 client = TestClient(app)
 
