@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { mockOffers, Offer } from "@/data/mockData";
 import {
   Carousel,
   CarouselContent,
@@ -11,6 +10,8 @@ import {
 } from "@/components/ui/carousel";
 import { Tag, Calendar, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useOffers } from "@/hooks/useTravelApi";
+import type { OfferCategory } from "@/services/api-types";
 
 const CATEGORIES = [
   { id: "all", label: "All Offers" },
@@ -21,11 +22,8 @@ const CATEGORIES = [
 ];
 
 export default function OffersSection() {
-  const [activeCategory, setActiveCategory] = useState<string>("all");
-
-  const filteredOffers = mockOffers.filter(
-    (offer) => activeCategory === "all" || offer.category === activeCategory
-  );
+  const [activeCategory, setActiveCategory] = useState<OfferCategory>("all");
+  const { data: offers = [], isLoading, isError } = useOffers(activeCategory);
 
   return (
     <section className="w-full max-w-6xl mx-auto px-4 py-12 space-y-6">
@@ -45,7 +43,7 @@ export default function OffersSection() {
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
+            onClick={() => setActiveCategory(cat.id as OfferCategory)}
               className={`py-1.5 px-4 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
                 activeCategory === cat.id
                   ? "bg-blue-600 text-white shadow-md shadow-blue-500/10"
@@ -69,7 +67,21 @@ export default function OffersSection() {
         >
           <CarouselContent className="-ml-4">
             <AnimatePresence mode="popLayout">
-              {filteredOffers.map((offer, idx) => (
+              {isLoading && (
+                <CarouselItem className="pl-4 basis-full">
+                  <div className="bg-white rounded-2xl border border-slate-100 p-8 text-sm font-bold text-slate-400">
+                    Loading offers from backend...
+                  </div>
+                </CarouselItem>
+              )}
+              {isError && (
+                <CarouselItem className="pl-4 basis-full">
+                  <div className="bg-white rounded-2xl border border-red-100 p-8 text-sm font-bold text-red-400">
+                    Unable to load offers. Check the FastAPI service.
+                  </div>
+                </CarouselItem>
+              )}
+              {!isLoading && !isError && offers.map((offer, idx) => (
                 <CarouselItem
                   key={offer.id}
                   className="pl-4 md:basis-1/2 lg:basis-1/3"

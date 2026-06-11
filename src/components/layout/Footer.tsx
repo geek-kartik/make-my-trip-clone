@@ -1,72 +1,47 @@
 "use client";
 
 import React from "react";
-import { Plane, Hotel, Train, Car, Compass, Mail, Heart } from "lucide-react";
+import { Plane, Hotel, Train, Compass, Mail, Heart } from "lucide-react";
+import { useHomepageContent } from "@/hooks/useTravelApi";
+import type { FooterDirectory } from "@/services/api-types";
+
+const FOOTER_ICONS: Record<FooterDirectory["icon"], React.ReactNode> = {
+  plane: <Plane className="h-4.5 w-4.5 text-blue-500 rotate-45" />,
+  hotel: <Hotel className="h-4.5 w-4.5 text-orange-500" />,
+  compass: <Compass className="h-4.5 w-4.5 text-amber-500" />,
+  train: <Train className="h-4.5 w-4.5 text-red-500" />,
+};
 
 export default function Footer() {
+  const { data: homepage } = useHomepageContent();
+  const footer = homepage?.footer;
+
   return (
     <footer className="w-full bg-[#151c22] text-[#8a98a5] py-14 border-t border-[#1e272f]">
       <div className="max-w-6xl mx-auto px-4 space-y-12">
         {/* Row 1: Directories */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-          <div className="space-y-4">
-            <h4 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
-              <Plane className="h-4.5 w-4.5 text-blue-500 rotate-45" /> Flights
-            </h4>
-            <ul className="space-y-2 text-xs font-semibold">
-              <li><a href="#" className="hover:text-white transition-colors">Domestic Flights</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">International Flights</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Airline Tickets</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Flight Status</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Cheap Flights</a></li>
-            </ul>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
-              <Hotel className="h-4.5 w-4.5 text-orange-500" /> Hotels
-            </h4>
-            <ul className="space-y-2 text-xs font-semibold">
-              <li><a href="#" className="hover:text-white transition-colors">Hotels in Delhi</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Hotels in Mumbai</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Hotels in Bangalore</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Luxury Resorts</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Budget Stays</a></li>
-            </ul>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
-              <Compass className="h-4.5 w-4.5 text-amber-500" /> Holidays
-            </h4>
-            <ul className="space-y-2 text-xs font-semibold">
-              <li><a href="#" className="hover:text-white transition-colors">Goa Packages</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Kerala Packages</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Kashmir Tour Packages</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Europe Packages</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Honeymoon Packages</a></li>
-            </ul>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
-              <Train className="h-4.5 w-4.5 text-red-500" /> Trains & Buses
-            </h4>
-            <ul className="space-y-2 text-xs font-semibold">
-              <li><a href="#" className="hover:text-white transition-colors">IRCTC Train Tickets</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Pnr Status Search</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Book Bus Tickets</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">APS RTC Buses</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">UPS RTC Buses</a></li>
-            </ul>
-          </div>
+          {(footer?.directories ?? []).map((directory) => (
+            <div className="space-y-4" key={directory.title}>
+              <h4 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                {FOOTER_ICONS[directory.icon]} {directory.title}
+              </h4>
+              <ul className="space-y-2 text-xs font-semibold">
+                {directory.links.map((link) => (
+                  <li key={link}>
+                    <a href="#" className="hover:text-white transition-colors">{link}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           <div className="col-span-2 md:col-span-1 space-y-4">
             <h4 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
               <Mail className="h-4.5 w-4.5 text-blue-400" /> Contact Info
             </h4>
             <p className="text-xs font-semibold leading-relaxed">
-              MakeMyTrip India Pvt. Ltd. DLF Cyber City, Phase 3, Gurugram, Haryana, India.
+              {footer?.companyAddress ?? "Loading company information from backend."}
             </p>
             <div className="flex gap-2">
               <a href="#" className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 text-white transition-colors flex items-center justify-center" aria-label="Facebook">
@@ -96,10 +71,10 @@ export default function Footer() {
         {/* Row 2: About MakeMyTrip */}
         <div className="border-t border-[#1e272f] pt-8 space-y-4">
           <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-            About MakeMyTrip Clone
+            {footer?.aboutTitle ?? "About MakeMyTrip Clone"}
           </h3>
           <p className="text-xs font-medium leading-relaxed text-[#758491]">
-            MakeMyTrip is India&apos;s leading online travel portal, offering competitive airline bookings, hotel listings, domestic and international vacation packages, and train/bus reservations. This client application is constructed using a modern React & Next.js 15 framework, maintaining highly structured state stores with Zustand and fully caching resources using React Query, preparing the frontend interface for zero-friction backend FastAPI integrations.
+            {footer?.aboutBody ?? "Loading backend-powered company profile."}
           </p>
         </div>
 

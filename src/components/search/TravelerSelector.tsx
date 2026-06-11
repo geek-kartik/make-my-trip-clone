@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { TravelClass } from "@/store/useSearchStore";
-import { Users, ChevronDown, Check } from "lucide-react";
+import { ChevronDown, Check } from "lucide-react";
 
 interface TravelerSelectorProps {
   value: {
@@ -61,12 +61,6 @@ export default function TravelerSelector({ value, travelClass, onChange }: Trave
       tempClass
     );
     setIsOpen(false);
-  };
-
-  const getPassengerLabel = () => {
-    const total = value.adults + value.children + value.infants;
-    const classLabel = CLASS_OPTIONS.find((c) => c.value === travelClass)?.label || "Economy";
-    return `${total} Traveler${total > 1 ? "s" : ""}, ${classLabel}`;
   };
 
   const renderSelectorRow = (
@@ -152,7 +146,7 @@ export default function TravelerSelector({ value, travelClass, onChange }: Trave
                   }`}
                 >
                   {option.label}
-                  {tempClass === option.value && <Check className="h-3w-3 text-blue-600 stroke-[3px]" />}
+                  {tempClass === option.value && <Check className="h-3 w-3 text-blue-600 stroke-[3px]" />}
                 </button>
               ))}
             </div>

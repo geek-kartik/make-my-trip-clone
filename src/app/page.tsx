@@ -6,13 +6,16 @@ import SearchWidget from "@/components/search/SearchWidget";
 import FlightResults from "@/components/search/FlightResults";
 import OffersSection from "@/components/offers/OffersSection";
 import DownloadApp from "@/components/features/DownloadApp";
+import BrandTrust from "@/components/features/BrandTrust";
 import Footer from "@/components/layout/Footer";
 import LoginModal from "@/components/auth/LoginModal";
 import { useSearchStore } from "@/store/useSearchStore";
 import { Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
+import { useHomepageContent } from "@/hooks/useTravelApi";
 
 export default function Home() {
   const { isSearchExecuted } = useSearchStore();
+  const { data: homepage, isLoading, isError } = useHomepageContent();
 
   return (
     <main className="min-h-screen flex flex-col justify-between">
@@ -35,14 +38,19 @@ export default function Home() {
               
               <div className="max-w-6xl mx-auto px-4 text-center space-y-4 relative z-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/10 text-xs font-semibold text-sky-200">
-                  <Sparkles className="h-3.5 w-3.5" /> Book with confidence. No hidden charges.
+                  <Sparkles className="h-3.5 w-3.5" /> {homepage?.hero.eyebrow ?? "Loading travel content..."}
                 </div>
                 <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-none">
-                  Where to Next?
+                  {homepage?.hero.title ?? "Where to Next?"}
                 </h1>
                 <p className="text-slate-300 text-xs md:text-sm font-medium max-w-md mx-auto">
-                  Find the best deals on flights, hotels, holiday packages and much more.
+                  {homepage?.hero.subtitle ?? "Connecting to travel content service."}
                 </p>
+                {isError && (
+                  <p className="text-amber-200 text-xs font-bold">
+                    Backend content service is unavailable. Start FastAPI on port 8000 and refresh.
+                  </p>
+                )}
               </div>
             </div>
 
@@ -60,18 +68,24 @@ export default function Home() {
                     <ShieldCheck className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-slate-800 text-sm">Safe Travel Guidelines</h3>
-                    <p className="text-slate-500 text-xs mt-0.5 font-medium">Verify state-wise quarantine policies and airline check-in guidelines before you fly.</p>
+                    <h3 className="font-extrabold text-slate-800 text-sm">
+                      {homepage?.advisory.title ?? "Safe Travel Guidelines"}
+                    </h3>
+                    <p className="text-slate-500 text-xs mt-0.5 font-medium">
+                      {homepage?.advisory.body ?? "Loading backend advisory content..."}
+                    </p>
                   </div>
                 </div>
                 <a href="#" className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 group">
-                  Read Travel Guidelines <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  {homepage?.advisory.ctaLabel ?? "Read Travel Guidelines"} <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </a>
               </div>
             </div>
 
             {/* Promo Offers Section */}
             <OffersSection />
+
+            {!isLoading && <BrandTrust />}
 
             {/* Mobile App promo section */}
             <DownloadApp />
