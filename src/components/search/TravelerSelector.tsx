@@ -103,18 +103,18 @@ export default function TravelerSelector({ value, travelClass, onChange }: Trave
     <div ref={containerRef} className="relative w-full h-full">
       <div
         onClick={() => setIsOpen(true)}
-        className="cursor-pointer p-4 h-full flex flex-col justify-center hover:bg-blue-50/40 transition-colors"
+        className="cursor-pointer p-4 min-h-[96px] h-full flex flex-col justify-center hover:bg-[#eaf5ff] transition-colors"
       >
-        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+        <span className="text-[13px] font-medium text-[#4a4a4a] flex items-center gap-1.5">
           Travellers & Class <ChevronDown className="h-3 w-3 text-slate-400" />
         </span>
-        <span className="text-2xl font-extrabold text-slate-800 mt-1 block truncate">
+        <span className="text-[29px] font-black text-[#111] mt-1 block truncate leading-none">
           {value.adults + value.children + value.infants}{" "}
-          <span className="text-sm font-bold text-slate-500">
-            Pax
+          <span className="text-[17px] font-black text-[#111]">
+            Traveller
           </span>
         </span>
-        <span className="text-xs text-slate-500 mt-1 font-medium truncate block">
+        <span className="text-xs text-[#4a4a4a] mt-2 font-medium truncate block">
           {CLASS_OPTIONS.find((c) => c.value === travelClass)?.label}
         </span>
       </div>

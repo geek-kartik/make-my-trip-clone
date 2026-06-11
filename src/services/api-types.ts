@@ -44,7 +44,19 @@ export interface FlightSearchResponse {
 export interface TravelTabItem {
   id: TravelTab;
   label: string;
-  icon: "plane" | "hotel" | "home" | "palmtree" | "train" | "bus" | "car";
+  icon:
+    | "plane"
+    | "hotel"
+    | "home"
+    | "palmtree"
+    | "train"
+    | "bus"
+    | "car"
+    | "map"
+    | "file"
+    | "ship"
+    | "card"
+    | "shield";
 }
 
 export interface FareTypeItem {

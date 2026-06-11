@@ -10,7 +10,7 @@ import BrandTrust from "@/components/features/BrandTrust";
 import Footer from "@/components/layout/Footer";
 import LoginModal from "@/components/auth/LoginModal";
 import { useSearchStore } from "@/store/useSearchStore";
-import { Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
+import { ArrowDown, ArrowRight, ShieldCheck } from "lucide-react";
 import { useHomepageContent } from "@/hooks/useTravelApi";
 
 export default function Home() {
@@ -32,22 +32,18 @@ export default function Home() {
           /* Main Homepage Screen */
           <div className="animate-in fade-in duration-300">
             {/* Top Banner section */}
-            <div className="w-full bg-gradient-to-b from-[#0a2240] via-[#103058] to-[#15467e] pt-12 pb-24 text-white relative">
-              {/* Subtle background graphics */}
-              <div className="absolute top-0 right-0 w-96 h-full bg-radial-gradient from-blue-500/5 to-transparent pointer-events-none" />
-              
-              <div className="max-w-6xl mx-auto px-4 text-center space-y-4 relative z-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/10 text-xs font-semibold text-sky-200">
-                  <Sparkles className="h-3.5 w-3.5" /> {homepage?.hero.eyebrow ?? "Loading travel content..."}
-                </div>
-                <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-none">
-                  {homepage?.hero.title ?? "Where to Next?"}
-                </h1>
-                <p className="text-slate-300 text-xs md:text-sm font-medium max-w-md mx-auto">
-                  {homepage?.hero.subtitle ?? "Connecting to travel content service."}
-                </p>
+            <div className="relative w-full min-h-[680px] overflow-visible bg-[#071827] text-white">
+              <div
+                className="absolute inset-0 bg-cover bg-center opacity-90"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(180deg, rgba(6,18,28,0.55) 0%, rgba(6,18,28,0.35) 46%, rgba(6,18,28,0.78) 100%), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1800&q=80')",
+                }}
+              />
+              <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/45 to-transparent" />
+              <div className="relative z-10 max-w-6xl mx-auto px-4 pt-[92px] text-center">
                 {isError && (
-                  <p className="text-amber-200 text-xs font-bold">
+                  <p className="mt-3 text-amber-200 text-xs font-bold">
                     Backend content service is unavailable. Start FastAPI on port 8000 and refresh.
                   </p>
                 )}
@@ -58,7 +54,27 @@ export default function Home() {
             <SearchWidget />
 
             {/* Spacer to balance the negative margin of SearchWidget */}
-            <div className="h-14 md:h-20" />
+            <div className="h-20 md:h-24" />
+
+            <div className="w-full flex justify-center -mt-4 mb-2 relative z-30 pointer-events-none">
+              <div className="flex flex-col items-center gap-1 text-white text-xs font-bold">
+                <ArrowDown className="h-4 w-4 animate-bounce" />
+                Explore More
+              </div>
+            </div>
+
+            <div className="w-full max-w-[980px] mx-auto px-4 mt-8 relative z-20">
+              <div className="bg-white rounded-[22px] shadow-[0_4px_22px_rgba(0,0,0,0.16)] grid grid-cols-2 md:grid-cols-6 overflow-hidden border border-white/60">
+                {["Where2Go", "How2Go", "MakeMyTrip ICICI Credit Card", "MICE", "Gift Cards", "Trip Money"].map((item, index) => (
+                  <div key={item} className="flex items-center gap-2 px-4 py-3 text-[12px] font-semibold text-[#4a4a4a] border-r last:border-r-0 border-slate-100">
+                    <span className="h-7 w-7 rounded-full bg-[#eef7ff] text-[#008cff] grid place-items-center text-xs font-black">
+                      {index + 1}
+                    </span>
+                    <span className="leading-tight">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* Travel Advisory / Safe Travel Banner */}
             <div className="w-full max-w-6xl mx-auto px-4">

@@ -26,6 +26,11 @@ class TravelTab(str, Enum):
     TRAINS = "trains"
     BUSES = "buses"
     CABS = "cabs"
+    TOURS = "tours"
+    VISA = "visa"
+    CRUISE = "cruise"
+    FOREX = "forex"
+    INSURANCE = "insurance"
 
 
 class TripType(str, Enum):
