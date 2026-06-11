@@ -31,15 +31,15 @@ Create database/user:
 ```sql
 CREATE DATABASE "make-my-trip-clone";
 -- If this user does not already exist:
-CREATE USER mmt_karthiksrinivasgaddamuser WITH PASSWORD 'postgres';
-GRANT ALL PRIVILEGES ON DATABASE "make-my-trip-clone" TO mmt_karthiksrinivasgaddamuser;
+CREATE USER karthiksrinivasgaddam WITH PASSWORD 'postgres';
+GRANT ALL PRIVILEGES ON DATABASE "make-my-trip-clone" TO karthiksrinivasgaddam;
 ```
 
 If your PostgreSQL user cannot create tables after connecting to the database, also run:
 
 ```sql
 \c "make-my-trip-clone"
-GRANT ALL ON SCHEMA public TO mmt_karthiksrinivasgaddamuser;
+GRANT ALL ON SCHEMA public TO karthiksrinivasgaddam;
 ```
 
 Install and seed:
@@ -56,7 +56,7 @@ uvicorn app.main:app --reload --port 8000
 `backend/.env` should contain:
 
 ```env
-DATABASE_URL=postgresql+psycopg://mmt_karthiksrinivasgaddamuser:postgres@127.0.0.1:5432/make-my-trip-clone
+DATABASE_URL=postgresql+psycopg://karthiksrinivasgaddam:postgres@127.0.0.1:5432/make-my-trip-clone
 DATABASE_ECHO=false
 AUTO_SEED_DATABASE=true
 ```

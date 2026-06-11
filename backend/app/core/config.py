@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     environment: str = Field(default="local", validation_alias="APP_ENV")
     api_v1_prefix: str = "/api/v1"
     database_url: str = Field(
-        default="postgresql+psycopg://mmt_karthiksrinivasgaddamuser:postgres@127.0.0.1:5432/make-my-trip-clone",
+        default="postgresql+psycopg://karthiksrinivasgaddam:postgres@127.0.0.1:5432/make-my-trip-clone",
         validation_alias="DATABASE_URL",
     )
     database_echo: bool = Field(default=False, validation_alias="DATABASE_ECHO")

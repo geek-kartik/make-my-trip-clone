@@ -11,8 +11,8 @@ Create/seed PostgreSQL first:
 ```sql
 CREATE DATABASE "make-my-trip-clone";
 -- If this user does not already exist:
-CREATE USER mmt_karthiksrinivasgaddamuser WITH PASSWORD 'postgres';
-GRANT ALL PRIVILEGES ON DATABASE "make-my-trip-clone" TO mmt_karthiksrinivasgaddamuser;
+CREATE USER karthiksrinivasgaddam WITH PASSWORD 'postgres';
+GRANT ALL PRIVILEGES ON DATABASE "make-my-trip-clone" TO karthiksrinivasgaddam;
 ```
 
 ```bash
