@@ -8,27 +8,9 @@ import TravelerSelector from "./TravelerSelector";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { 
-  Plane, Hotel, Home, Palmtree, Train, Bus, Car, 
-  ArrowLeftRight, Calendar as CalendarIcon, Search, AlertCircle,
-  MapPinned, FileCheck, Ship, CreditCard, ShieldCheck, CirclePlay
+  ArrowLeftRight, Calendar as CalendarIcon, Search, AlertCircle, CirclePlay
 } from "lucide-react";
 import { useCities, useHomepageContent } from "@/hooks/useTravelApi";
-import type { TravelTabItem } from "@/services/api-types";
-
-const TAB_ICONS: Record<TravelTabItem["icon"], React.ReactNode> = {
-  plane: <Plane className="h-5 w-5" />,
-  hotel: <Hotel className="h-5 w-5" />,
-  home: <Home className="h-5 w-5" />,
-  palmtree: <Palmtree className="h-5 w-5" />,
-  train: <Train className="h-5 w-5" />,
-  bus: <Bus className="h-5 w-5" />,
-  car: <Car className="h-5 w-5" />,
-  map: <MapPinned className="h-5 w-5" />,
-  file: <FileCheck className="h-5 w-5" />,
-  ship: <Ship className="h-5 w-5" />,
-  card: <CreditCard className="h-5 w-5" />,
-  shield: <ShieldCheck className="h-5 w-5" />,
-};
 
 const formatMmtDate = (date: Date) => `${format(date, "MMM")}'${format(date, "yy, EEEE")}`;
 
@@ -100,13 +82,10 @@ export default function SearchWidget() {
                     new
                   </span>
                 )}
-                <div className={`transition-all ${
-                  isActive 
-                    ? "text-[#008cff]" 
-                    : "text-[#111] group-hover:text-[#008cff]"
-                }`}>
-                  {TAB_ICONS[tab.icon]}
-                </div>
+                <span
+                  aria-hidden="true"
+                  className={`mmt-product-icon mmt-product-icon-${tab.icon} ${isActive ? "mmt-product-icon-active" : ""}`}
+                />
                 <span className="text-[12px] leading-[14px] tracking-[-0.1px]">{tab.label}</span>
                 {isActive && (
                   <div className="absolute -bottom-2.5 left-4 right-4 h-[3px] bg-[#008cff] rounded-t-full" />

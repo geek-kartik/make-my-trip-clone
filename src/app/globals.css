@@ -128,3 +128,91 @@
     @apply font-sans;
   }
 }
+
+@layer components {
+  .mmt-product-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 38px;
+    height: 34px;
+    background-image: url("https://imgak.mmtcdn.com/pwa_v3/pwa_commons_assets/desktop/B2CHeaderSprite@2.png");
+    background-repeat: no-repeat;
+    background-size: 260px 450px;
+  }
+
+  .mmt-product-icon-plane {
+    width: 42px;
+    height: 34px;
+    background-position: -4px -3px;
+  }
+
+  .mmt-product-icon-plane.mmt-product-icon-active {
+    background-position: -4px -48px;
+  }
+
+  .mmt-product-icon-hotel {
+    width: 37px;
+    height: 37px;
+    background-position: -58px -2px;
+  }
+
+  .mmt-product-icon-home {
+    width: 39px;
+    height: 36px;
+    background-position: -56px -93px;
+  }
+
+  .mmt-product-icon-palmtree {
+    width: 40px;
+    height: 34px;
+    background-position: -109px -3px;
+  }
+
+  .mmt-product-icon-train {
+    width: 45px;
+    height: 34px;
+    background-position: -160px -3px;
+  }
+
+  .mmt-product-icon-bus {
+    width: 42px;
+    height: 34px;
+    background-position: -214px -4px;
+  }
+
+  .mmt-product-icon-car {
+    width: 40px;
+    height: 34px;
+    background-position: -5px -93px;
+  }
+
+  .mmt-product-icon-map {
+    width: 32px;
+    height: 38px;
+    background-position: -5px -404px;
+  }
+
+  .mmt-product-icon-file {
+    width: 30px;
+    height: 36px;
+    background-position: -111px -313px;
+  }
+
+  .mmt-product-icon-ship {
+    width: 43px;
+    height: 36px;
+    background-position: -214px -361px;
+  }
+
+  .mmt-product-icon-card {
+    width: 40px;
+    height: 34px;
+    background-position: -161px -93px;
+  }
+
+  .mmt-product-icon-shield {
+    width: 38px;
+    height: 38px;
+    background-position: -214px -92px;
+  }
+}
