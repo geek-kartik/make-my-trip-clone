@@ -1,4 +1,4 @@
-from typing import Protocol
+from typing import Optional, Protocol
 
 from app.domain.schemas import (
     City,
@@ -12,10 +12,10 @@ from app.domain.schemas import (
 
 
 class TravelCatalogRepository(Protocol):
-    def list_cities(self, query: str | None = None, exclude_code: str | None = None) -> list[City]:
+    def list_cities(self, query: Optional[str] = None, exclude_code: Optional[str] = None) -> list[City]:
         ...
 
-    def get_city(self, code: str) -> City | None:
+    def get_city(self, code: str) -> Optional[City]:
         ...
 
     def list_offers(self, category: OfferCategory = OfferCategory.ALL) -> list[Offer]:

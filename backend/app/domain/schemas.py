@@ -1,6 +1,6 @@
 from datetime import date
-from enum import StrEnum
-from typing import Any
+from enum import Enum
+from typing import Any, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -18,7 +18,7 @@ class ApiModel(BaseModel):
     )
 
 
-class TravelTab(StrEnum):
+class TravelTab(str, Enum):
     FLIGHTS = "flights"
     HOTELS = "hotels"
     HOMESTAYS = "homestays"
@@ -28,20 +28,20 @@ class TravelTab(StrEnum):
     CABS = "cabs"
 
 
-class TripType(StrEnum):
+class TripType(str, Enum):
     ONE_WAY = "oneWay"
     ROUND_TRIP = "roundTrip"
     MULTI_CITY = "multiCity"
 
 
-class TravelClass(StrEnum):
+class TravelClass(str, Enum):
     ECONOMY = "economy"
     PREMIUM_ECONOMY = "premiumEconomy"
     BUSINESS = "business"
     FIRST_CLASS = "firstClass"
 
 
-class FareType(StrEnum):
+class FareType(str, Enum):
     REGULAR = "regular"
     STUDENT = "student"
     SENIOR = "senior"
@@ -50,7 +50,7 @@ class FareType(StrEnum):
     DOUBLE = "double"
 
 
-class OfferCategory(StrEnum):
+class OfferCategory(str, Enum):
     ALL = "all"
     FLIGHTS = "flights"
     HOTELS = "hotels"
@@ -100,7 +100,7 @@ class FlightSearchParams(ApiModel):
     from_code: str = Field(min_length=3, max_length=3)
     to_code: str = Field(min_length=3, max_length=3)
     departure_date: date
-    return_date: date | None = None
+    return_date: Optional[date] = None
     trip_type: TripType = TripType.ONE_WAY
     travel_class: TravelClass = TravelClass.ECONOMY
     fare_type: FareType = FareType.REGULAR

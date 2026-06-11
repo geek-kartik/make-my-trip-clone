@@ -1,11 +1,12 @@
 from copy import deepcopy
+from typing import Optional
 
 from app.data.mock_catalog import BASE_FLIGHTS, CITIES, FARE_MULTIPLIERS, HOMEPAGE, OFFERS
 from app.domain.schemas import City, FareType, Flight, HomepageContent, Offer, OfferCategory, TravelClass
 
 
 class StaticTravelCatalogRepository:
-    def list_cities(self, query: str | None = None, exclude_code: str | None = None) -> list[City]:
+    def list_cities(self, query: Optional[str] = None, exclude_code: Optional[str] = None) -> list[City]:
         normalized_query = (query or "").strip().lower()
         normalized_exclude = (exclude_code or "").strip().upper()
 
@@ -21,7 +22,7 @@ class StaticTravelCatalogRepository:
 
         return results
 
-    def get_city(self, code: str) -> City | None:
+    def get_city(self, code: str) -> Optional[City]:
         normalized_code = code.strip().upper()
         return next((city for city in CITIES if city.code == normalized_code), None)
 

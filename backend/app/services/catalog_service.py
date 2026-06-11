@@ -1,4 +1,5 @@
 import asyncio
+from typing import Optional
 from uuid import uuid4
 
 from fastapi import HTTPException, status
@@ -19,7 +20,7 @@ class TravelCatalogService:
     def __init__(self, repository: TravelCatalogRepository) -> None:
         self.repository = repository
 
-    async def list_cities(self, query: str | None = None, exclude_code: str | None = None) -> list[City]:
+    async def list_cities(self, query: Optional[str] = None, exclude_code: Optional[str] = None) -> list[City]:
         await self._simulate_latency(40)
         return self.repository.list_cities(query=query, exclude_code=exclude_code)
 

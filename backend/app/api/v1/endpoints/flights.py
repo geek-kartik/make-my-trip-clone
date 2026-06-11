@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Optional
 
 from fastapi import APIRouter, Depends, Query
 
@@ -14,7 +15,7 @@ async def search_flights(
     from_code: str = Query(min_length=3, max_length=3),
     to_code: str = Query(min_length=3, max_length=3),
     departure_date: date = Query(),
-    return_date: date | None = Query(default=None),
+    return_date: Optional[date] = Query(default=None),
     trip_type: TripType = Query(default=TripType.ONE_WAY),
     travel_class: TravelClass = Query(default=TravelClass.ECONOMY),
     fare_type: FareType = Query(default=FareType.REGULAR),
