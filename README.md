@@ -21,9 +21,10 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-python -m app.scripts.seed_database
 uvicorn app.main:app --reload --port 8000
 ```
+
+The backend reads `backend/.env`. With `AUTO_SEED_DATABASE=true`, it creates missing tables and seeds required rows on first API access.
 
 Backend docs are available at:
 

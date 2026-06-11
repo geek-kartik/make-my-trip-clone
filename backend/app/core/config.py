@@ -16,6 +16,7 @@ class Settings(BaseSettings):
         validation_alias="DATABASE_URL",
     )
     database_echo: bool = Field(default=False, validation_alias="DATABASE_ECHO")
+    auto_seed_database: bool = Field(default=True, validation_alias="AUTO_SEED_DATABASE")
     cors_origins: list[str] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",

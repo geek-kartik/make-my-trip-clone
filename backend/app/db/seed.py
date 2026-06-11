@@ -16,6 +16,17 @@ from app.db.models import (
 )
 
 
+def has_seed_data(db: Session) -> bool:
+    return db.query(HomepageContentModel).filter(HomepageContentModel.page_key == "home").one_or_none() is not None
+
+
+def seed_database_if_empty(db: Session) -> bool:
+    if has_seed_data(db):
+        return False
+    seed_database(db)
+    return True
+
+
 def seed_database(db: Session) -> None:
     _seed_cities(db)
     _seed_product_tabs(db)

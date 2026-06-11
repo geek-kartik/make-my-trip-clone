@@ -50,7 +50,6 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-python -m app.scripts.seed_database
 uvicorn app.main:app --reload --port 8000
 ```
 
@@ -59,6 +58,13 @@ uvicorn app.main:app --reload --port 8000
 ```env
 DATABASE_URL=postgresql+psycopg://mmt_karthiksrinivasgaddamuser:postgres@127.0.0.1:5432/make-my-trip-clone
 DATABASE_ECHO=false
+AUTO_SEED_DATABASE=true
+```
+
+With `AUTO_SEED_DATABASE=true`, the backend creates missing tables and loads the required catalog rows on first API access if the database is empty. You can also seed manually:
+
+```bash
+python -m app.scripts.seed_database
 ```
 
 API docs:
