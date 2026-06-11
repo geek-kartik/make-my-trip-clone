@@ -34,6 +34,20 @@ CITIES: list[City] = [
     City(code="LHR", name="London", airport="Heathrow Airport", country="United Kingdom"),
     City(code="JFK", name="New York", airport="John F. Kennedy Intl Airport", country="United States"),
     City(code="BKK", name="Bangkok", airport="Suvarnabhumi Airport", country="Thailand"),
+    City(code="MNL", name="Manila", airport="Ninoy Aquino International Airport", country="Philippines", group="Visa-Free/Visa-on-Arrival Destinations"),
+    City(code="MLE", name="Male", airport="Velana International Airport", country="Maldives", group="Visa-Free/Visa-on-Arrival Destinations"),
+    City(code="KUL", name="Kuala Lumpur", airport="Kuala Lumpur International Airport", country="Malaysia", group="Visa-Free/Visa-on-Arrival Destinations"),
+    City(code="CMB", name="Colombo", airport="Bandaranaike International Airport", country="Sri Lanka", group="Visa-Free/Visa-on-Arrival Destinations"),
+    City(code="MRU", name="Mauritius", airport="Sir Seewoosagur Ramgoolam International Airport", country="Mauritius", group="Visa-Free/Visa-on-Arrival Destinations"),
+    City(code="HKG", name="Hong Kong", airport="Hong Kong International Airport", country="Hong Kong", group="Visa-Free/Visa-on-Arrival Destinations"),
+    City(code="PBH", name="Paro", airport="Paro International Airport", country="Bhutan", group="Visa-Free/Visa-on-Arrival Destinations"),
+    City(code="SEZ", name="Mahe Island", airport="Seychelles International Airport", country="Seychelles", group="Visa-Free/Visa-on-Arrival Destinations"),
+    City(code="NAN", name="Nadi", airport="Nadi International Airport", country="Fiji", group="Visa-Free/Visa-on-Arrival Destinations"),
+    City(code="DPS", name="Denpasar Bali", airport="Ngurah Rai International Airport", country="Indonesia", group="E-Visa Destinations"),
+    City(code="SGN", name="Ho Chi Minh City", airport="Tan Son Nhat International Airport", country="Vietnam", group="E-Visa Destinations"),
+    City(code="TYO", name="Tokyo", airport="Tokyo Metropolitan Area", country="Japan", group="E-Visa Destinations"),
+    City(code="REP", name="Siem Reap", airport="Siem Reap Angkor International Airport", country="Cambodia", group="E-Visa Destinations"),
+    City(code="TBS", name="Tbilisi", airport="Tbilisi International Airport", country="Georgia", group="E-Visa Destinations"),
 ]
 
 

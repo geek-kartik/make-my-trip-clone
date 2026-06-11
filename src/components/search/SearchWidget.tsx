@@ -145,7 +145,7 @@ export default function SearchWidget() {
         </div>
 
         {/* Row 2: Search Box Grid */}
-        <div className="border border-[#d8d8d8] rounded-[7px] grid grid-cols-1 md:grid-cols-12 relative overflow-hidden bg-white">
+        <div className="border border-[#d8d8d8] rounded-[7px] grid grid-cols-1 md:grid-cols-12 relative overflow-visible bg-white">
           {/* FROM selector */}
           <div className="md:col-span-3 bg-white border-b md:border-b-0 md:border-r border-[#d8d8d8] relative">
             <CitySelector
