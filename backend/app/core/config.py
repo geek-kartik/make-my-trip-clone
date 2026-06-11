@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     environment: str = Field(default="local", validation_alias="APP_ENV")
     api_v1_prefix: str = "/api/v1"
     database_url: str = Field(
-        default="mysql+pymysql://mmt_user:mmt_password@127.0.0.1:3306/makemytrip_clone",
+        default="postgresql+psycopg://mmt_user:mmt_password@127.0.0.1:5432/makemytrip_clone",
         validation_alias="DATABASE_URL",
     )
     database_echo: bool = Field(default=False, validation_alias="DATABASE_ECHO")

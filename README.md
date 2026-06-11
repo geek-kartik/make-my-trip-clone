@@ -1,18 +1,17 @@
 # MakeMyTrip Clone
 
-Next.js frontend integrated with a FastAPI backend that serves homepage, offer, city, and flight-search data from MySQL through SQLAlchemy repository handlers.
+Next.js frontend integrated with a FastAPI backend that serves homepage, offer, city, and flight-search data from PostgreSQL through SQLAlchemy repository handlers.
 
 ## Getting Started
 
 ### 1. Start the FastAPI backend
 
-Create/seed MySQL first:
+Create/seed PostgreSQL first:
 
 ```sql
-CREATE DATABASE makemytrip_clone CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'mmt_user'@'localhost' IDENTIFIED BY 'mmt_password';
-GRANT ALL PRIVILEGES ON makemytrip_clone.* TO 'mmt_user'@'localhost';
-FLUSH PRIVILEGES;
+CREATE DATABASE makemytrip_clone;
+CREATE USER mmt_user WITH PASSWORD 'mmt_password';
+GRANT ALL PRIVILEGES ON DATABASE makemytrip_clone TO mmt_user;
 ```
 
 ```bash
@@ -20,7 +19,7 @@ cd backend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-export DATABASE_URL="mysql+pymysql://mmt_user:mmt_password@127.0.0.1:3306/makemytrip_clone"
+export DATABASE_URL="postgresql+psycopg://mmt_user:mmt_password@127.0.0.1:5432/makemytrip_clone"
 python -m app.scripts.seed_database
 uvicorn app.main:app --reload --port 8000
 ```
