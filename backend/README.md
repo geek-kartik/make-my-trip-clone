@@ -1,14 +1,49 @@
 # MakeMyTrip Clone Backend
 
-FastAPI backend for the MakeMyTrip-like frontend. The current implementation uses static in-memory repositories while preserving service and repository boundaries so MySQL can be introduced later without changing API handlers or frontend contracts.
+FastAPI backend for the MakeMyTrip-like frontend. API handlers call a service layer, which now reads data through SQLAlchemy/MySQL repository handlers. Static catalog data is only used by the seed script to populate local/dev databases.
+
+## MySQL tables
+
+Create these tables end to end for the current API surface:
+
+1. `cities`
+2. `product_tabs`
+3. `fare_types`
+4. `homepage_content`
+5. `footer_directories`
+6. `footer_links`
+7. `brand_trust_items`
+8. `offers`
+9. `airlines`
+10. `flights`
+11. `flight_travel_classes`
+
+DDL is available in:
+
+```text
+backend/database/schema.sql
+```
 
 ## Run locally
+
+Create database/user:
+
+```sql
+CREATE DATABASE makemytrip_clone CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'mmt_user'@'localhost' IDENTIFIED BY 'mmt_password';
+GRANT ALL PRIVILEGES ON makemytrip_clone.* TO 'mmt_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+Install and seed:
 
 ```bash
 cd backend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+export DATABASE_URL="mysql+pymysql://mmt_user:mmt_password@127.0.0.1:3306/makemytrip_clone"
+python -m app.scripts.seed_database
 uvicorn app.main:app --reload --port 8000
 ```
 
@@ -31,5 +66,6 @@ http://localhost:8000/api/v1
 - `api/`: versioned HTTP route handlers
 - `domain/`: API schemas and repository protocols
 - `services/`: business use cases
-- `infrastructure/`: concrete static repository implementation
-- `data/`: mock data that can later be replaced by database-backed repositories
+- `infrastructure/`: concrete SQLAlchemy/MySQL repository implementation
+- `db/`: SQLAlchemy models, engine/session, and seed helpers
+- `data/`: seed source data for local/dev catalog initialization
